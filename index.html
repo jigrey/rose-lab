@@ -16,22 +16,29 @@
 <div class="actions"><button id="water" disabled>💧 Полил</button><button id="drain" disabled>✓ Слил воду</button></div><div id="eventStatus" class="eventstatus" role="status" aria-live="polite">Запись событий доступна только администратору через Telegram.</div>
 <div class="notice"><span id="apiStatus">Загружаем измерения…</span> Уведомления пока не подключены.</div>
 </section>
-<section id="settings" class="hidden"><div class="panel"><div class="panelhead"><h2>Настройки</h2><button id="back" class="iconbtn" aria-label="Назад">×</button></div><label class="field">Порог полива, г <input id="threshold" type="number" min="1" step="1" value="550"></label><label class="field">Окно расчёта, ч <input id="window" type="number" min="1" max="168" value="24"></label><label class="field">Предупредить за, ч <input id="warning" type="number" min="1" max="168" value="6"></label><label class="field">Telegram-уведомления <input id="alerts" type="checkbox" checked></label><label class="field">Повторные напоминания <input id="repeats" type="checkbox" checked></label><button id="save" class="save" disabled>Настройки пока только для просмотра</button><p class="notice">Настройки прогноза пока фиксированы в API. Изменение настроек и уведомления подключим после настройки защищённой записи.</p></div></section>
+<section id="settings" class="hidden"><div class="panel"><div class="panelhead"><h2>Настройки</h2><button id="back" class="iconbtn" aria-label="Назад">×</button></div><label class="field">Порог полива, г <input id="threshold" type="number" min="1" step="1" value="550"></label><label class="field">Окно расчёта, ч <input id="window" type="number" min="1" max="168" value="24"></label><label class="field">Предупредить за, ч <input id="warning" type="number" min="1" max="168" value="6"></label><label class="field">Telegram-уведомления <input id="alerts" type="checkbox" checked></label><label class="field">Повторные напоминания <input id="repeats" type="checkbox" checked></label><button id="save" class="save" disabled>Сохранить настройки</button><div id="settingsStatus" class="status" role="status"></div><p class="notice">Параметры прогноза сохраняются в Google Apps Script. Telegram-уведомления и повторные напоминания подключим позже.</p></div></section>
 </main><script>
  'use strict';
 const API='https://script.google.com/macros/s/AKfycbygcRjbEJqHln-QL5OmA3P0pKHcCUZHdYkqZ10_mTsC836u1KEFb27iH-drKLiJXQaCMQ/exec';
 const AUTH_API='https://rose-lab-api.s-naumov-nyc.workers.dev/auth';
  const EVENT_API='https://rose-lab-api.s-naumov-nyc.workers.dev/event';
+const SETTINGS_API='https://rose-lab-api.s-naumov-nyc.workers.dev/settings';
 const tg=window.Telegram?.WebApp;try{tg?.ready();tg?.expand()}catch(_){}
 const $=id=>document.getElementById(id);
 let cfg={threshold:550,window:24,warning:6},samples=[],events=[],hours=24,loaded=false,latestRate=null;
 $('water').disabled=true;$('drain').disabled=true;
-let isAdmin=false,eventBusy=false,lastEventAttempt=0;
+let isAdmin=false,eventBusy=false,lastEventAttempt=0,settingsBusy=false;
  function updateEventButtons(){
   const enabled=isAdmin&&!eventBusy&&Boolean(tg?.initData);
   $('water').disabled=!enabled;$('drain').disabled=!enabled;
  }
 ['threshold','window','warning','alerts','repeats'].forEach(id=>$(id).disabled=true);
+function updateSettingsControls(){
+ const editable=isAdmin&&!settingsBusy&&Boolean(tg?.initData);
+ ['threshold','window','warning'].forEach(id=>$(id).disabled=!editable);
+ $('save').disabled=!editable;
+ $('save').textContent=settingsBusy?'Сохраняем…':'Сохранить настройки';
+}
 async function checkTelegramAccess(){
  const status=$('authStatus');
  if(!tg?.initData){
@@ -51,7 +58,7 @@ async function checkTelegramAccess(){
      return;
    }
    isAdmin=result.isAdmin===true;
-    updateEventButtons();
+    updateEventButtons();updateSettingsControls();
    status.textContent=isAdmin?'✓ Администратор · Telegram подтверждён':'Режим просмотра · Telegram подтверждён';
     if(isAdmin)$('eventStatus').textContent='Кнопки доступны. Событие будет записано с последним замером ESP32 (не старше 30 минут).';
  }catch(error){
@@ -166,7 +173,29 @@ async function recordEvent(type){
 }
 $('water').onclick=()=>recordEvent('полив');
 $('drain').onclick=()=>recordEvent('послеслив');
-$('settingsBtn').onclick=()=>{$('dashboard').classList.add('hidden');$('settings').classList.remove('hidden');$('threshold').value=cfg.threshold;$('window').value=cfg.window;$('warning').value=cfg.warning};
+async function saveSettings(){
+ if(!isAdmin||!tg?.initData||settingsBusy)return;
+ const threshold=Number($('threshold').value),windowHours=Number($('window').value),warning=Number($('warning').value);
+ if(!Number.isFinite(threshold)||threshold<1||threshold>6000||!Number.isFinite(windowHours)||!Number.isInteger(windowHours)||windowHours<1||windowHours>168||!Number.isFinite(warning)||!Number.isInteger(warning)||warning<1||warning>168||!$('threshold').value||!$('window').value||!$('warning').value){
+   $('settingsStatus').textContent='Проверь значения: порог 1–6000 г, окно и предупреждение 1–168 ч (целые часы).';return;
+ }
+ settingsBusy=true;updateSettingsControls();
+ $('settingsStatus').textContent='Сохраняем настройки…';
+ try{
+   const response=await fetch(SETTINGS_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({initData:tg.initData,settings:{wateringThreshold:threshold,calculationHours:windowHours,warningHours:warning}}),cache:'no-store'});
+   let result;try{result=await response.json()}catch(_){throw new Error('Некорректный ответ сервера')}
+   if(!response.ok||result.ok!==true){
+     if(result.error==='Telegram verification failed')throw new Error('Сессия Telegram устарела. Переоткрой приложение.');
+     throw new Error('Сервер не подтвердил сохранение');
+   }
+   await refresh();
+   if(cfg.threshold!==threshold||cfg.window!==windowHours||cfg.warning!==warning)throw new Error('Не удалось подтвердить новые значения при чтении API');
+   $('settingsStatus').textContent='✓ Настройки сохранены и проверены через Google Sheets API.';
+ }catch(error){$('settingsStatus').textContent='Не удалось подтвердить сохранение: '+error.message+'. Проверь значения после обновления страницы.';}
+ finally{settingsBusy=false;updateSettingsControls();}
+}
+$('save').onclick=saveSettings;
+$('settingsBtn').onclick=()=>{$('dashboard').classList.add('hidden');$('settings').classList.remove('hidden');$('threshold').value=cfg.threshold;$('window').value=cfg.window;$('warning').value=cfg.warning;$('settingsStatus').textContent='';updateSettingsControls()};
 $('back').onclick=()=>{$('settings').classList.add('hidden');$('dashboard').classList.remove('hidden');render()};
 document.querySelectorAll('[data-hours]').forEach(b=>b.onclick=()=>{hours=Number(b.dataset.hours);document.querySelectorAll('[data-hours]').forEach(x=>x.classList.toggle('active',x===b));draw()});
 window.addEventListener('resize',draw);checkTelegramAccess();refresh();setInterval(refresh,600000);

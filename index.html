@@ -5,7 +5,7 @@
 <title>Rose Lab</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{color-scheme:light dark;--bg:var(--tg-theme-bg-color,#fafafa);--card:var(--tg-theme-secondary-bg-color,#f1f1f1);--fg:var(--tg-theme-text-color,#171717);--muted:var(--tg-theme-hint-color,#737373);--accent:var(--tg-theme-button-color,#3983cc)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.app{max-width:760px;margin:auto;padding:18px 14px 36px}header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}header h1{font-size:18px;margin:0}button{font:inherit;cursor:pointer}.iconbtn{background:none;border:0;color:var(--fg);font-size:22px;padding:5px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.tile,.panel{background:var(--card);border-radius:14px;padding:13px}.tile{min-height:94px}.label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.02em}.value{font-size:19px;font-weight:700;margin-top:10px;line-height:1.12;overflow-wrap:anywhere}.sub{color:var(--muted);font-size:12px;margin-top:7px}.panel{margin-top:12px}.forecast{font-size:14px;line-height:1.5}.forecast small{color:var(--muted)}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.panelhead h2{font-size:16px;margin:0}.periods{display:flex;gap:5px}.periods button{background:transparent;border:1px solid var(--muted);color:var(--fg);border-radius:8px;padding:5px 9px;font-size:12px}.periods button.active{background:var(--accent);color:white;border-color:var(--accent)}canvas{width:100%;height:205px;display:block}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.actions button,.save{background:var(--accent);color:white;border:0;border-radius:13px;padding:15px 10px;font-weight:650}.actions button:last-child{background:var(--card);color:var(--fg);border:1px solid var(--muted)}.notice{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}.hidden{display:none!important}.field{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0}.field input[type=number]{width:95px;padding:8px;border-radius:9px;border:1px solid var(--muted);background:var(--bg);color:var(--fg);font-size:16px}.field input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}.save{width:100%}.status{font-size:12px;color:var(--muted);margin-top:8px}.actions button:disabled,.save:disabled{opacity:.5;cursor:not-allowed}.authbadge{font-size:12px;color:var(--muted);margin:0 0 12px;padding:9px 12px;border-radius:10px;background:var(--card)}@media(max-width:370px){.app{padding-left:9px;padding-right:9px}.tile{padding:9px}.value{font-size:16px}.label{font-size:10px}}
+:root{color-scheme:light dark;--bg:var(--tg-theme-bg-color,#fafafa);--card:var(--tg-theme-secondary-bg-color,#f1f1f1);--fg:var(--tg-theme-text-color,#171717);--muted:var(--tg-theme-hint-color,#737373);--accent:var(--tg-theme-button-color,#3983cc)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:15px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}.app{max-width:760px;margin:auto;padding:18px 14px 36px}header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}header h1{font-size:18px;margin:0}button{font:inherit;cursor:pointer}.iconbtn{background:none;border:0;color:var(--fg);font-size:22px;padding:5px}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.tile,.panel{background:var(--card);border-radius:14px;padding:13px}.tile{min-height:94px}.label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.02em}.value{font-size:19px;font-weight:700;margin-top:10px;line-height:1.12;overflow-wrap:anywhere}.sub{color:var(--muted);font-size:12px;margin-top:7px}.panel{margin-top:12px}.forecast{font-size:14px;line-height:1.5}.forecast small{color:var(--muted)}.panelhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.panelhead h2{font-size:16px;margin:0}.periods{display:flex;gap:5px}.periods button{background:transparent;border:1px solid var(--muted);color:var(--fg);border-radius:8px;padding:5px 9px;font-size:12px}.periods button.active{background:var(--accent);color:white;border-color:var(--accent)}canvas{width:100%;height:205px;display:block}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.actions button,.save{background:var(--accent);color:white;border:0;border-radius:13px;padding:15px 10px;font-weight:650}.actions button:last-child{background:var(--card);color:var(--fg);border:1px solid var(--muted)}.notice{font-size:12px;color:var(--muted);line-height:1.5;margin-top:12px}.hidden{display:none!important}.field{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:14px 0}.field input[type=number]{width:95px;padding:8px;border-radius:9px;border:1px solid var(--muted);background:var(--bg);color:var(--fg);font-size:16px}.field input[type=checkbox]{width:20px;height:20px;accent-color:var(--accent)}.save{width:100%}.status{font-size:12px;color:var(--muted);margin-top:8px}.actions button:disabled,.save:disabled{opacity:.5;cursor:not-allowed}.eventstatus{font-size:12px;line-height:1.5;margin-top:9px;color:var(--muted)}.authbadge{font-size:12px;color:var(--muted);margin:0 0 12px;padding:9px 12px;border-radius:10px;background:var(--card)}@media(max-width:370px){.app{padding-left:9px;padding-right:9px}.tile{padding:9px}.value{font-size:16px}.label{font-size:10px}}
 </style></head><body><main class="app">
 <header><h1>♧ Rose Lab</h1><button id="settingsBtn" class="iconbtn" aria-label="Настройки">⚙</button></header>
 <div id="authStatus" class="authbadge" role="status">Проверяем доступ Telegram…</div>
@@ -13,19 +13,24 @@
 <div class="stats"><div class="tile"><div class="label">Вес</div><div id="weight" class="value">—</div></div><div class="tile"><div class="label">Замер</div><div id="measured" class="value">—</div><div id="measuredDate" class="sub"></div></div><div class="tile"><div class="label">До полива</div><div id="eta" class="value">—</div><div id="etaDate" class="sub"></div></div></div>
 <div class="panel forecast"><div id="forecastText">Расчётный полив: —</div><small id="details">Порог: 550 г · Потеря за 24 ч: —</small></div>
 <div class="panel"><div class="panelhead"><h2>График веса</h2><div class="periods"><button data-hours="24" class="active">24 ч</button><button data-hours="168">7 д</button><button data-hours="0">Всё</button></div></div><canvas id="chart" role="img" aria-label="График веса розы"></canvas><div id="chartStatus" class="status"></div></div>
-<div class="actions"><button id="water">💧 Полил</button><button id="drain">✓ Слил воду</button></div>
-<div class="notice"><span id="apiStatus">Загружаем измерения…</span> Кнопки записи пока отключены до подключения защищённой записи. Уведомления пока не подключены.</div>
+<div class="actions"><button id="water" disabled>💧 Полил</button><button id="drain" disabled>✓ Слил воду</button></div><div id="eventStatus" class="eventstatus" role="status" aria-live="polite">Запись событий доступна только администратору через Telegram.</div>
+<div class="notice"><span id="apiStatus">Загружаем измерения…</span> Уведомления пока не подключены.</div>
 </section>
 <section id="settings" class="hidden"><div class="panel"><div class="panelhead"><h2>Настройки</h2><button id="back" class="iconbtn" aria-label="Назад">×</button></div><label class="field">Порог полива, г <input id="threshold" type="number" min="1" step="1" value="550"></label><label class="field">Окно расчёта, ч <input id="window" type="number" min="1" max="168" value="24"></label><label class="field">Предупредить за, ч <input id="warning" type="number" min="1" max="168" value="6"></label><label class="field">Telegram-уведомления <input id="alerts" type="checkbox" checked></label><label class="field">Повторные напоминания <input id="repeats" type="checkbox" checked></label><button id="save" class="save" disabled>Настройки пока только для просмотра</button><p class="notice">Настройки прогноза пока фиксированы в API. Изменение настроек и уведомления подключим после настройки защищённой записи.</p></div></section>
 </main><script>
  'use strict';
 const API='https://script.google.com/macros/s/AKfycbygcRjbEJqHln-QL5OmA3P0pKHcCUZHdYkqZ10_mTsC836u1KEFb27iH-drKLiJXQaCMQ/exec';
 const AUTH_API='https://rose-lab-api.s-naumov-nyc.workers.dev/auth';
+ const EVENT_API='https://rose-lab-api.s-naumov-nyc.workers.dev/event';
 const tg=window.Telegram?.WebApp;try{tg?.ready();tg?.expand()}catch(_){}
 const $=id=>document.getElementById(id);
 let cfg={threshold:550,window:24,warning:6},samples=[],events=[],hours=24,loaded=false,latestRate=null;
 $('water').disabled=true;$('drain').disabled=true;
-let isAdmin=false;
+let isAdmin=false,eventBusy=false,lastEventAttempt=0;
+ function updateEventButtons(){
+  const enabled=isAdmin&&!eventBusy&&Boolean(tg?.initData);
+  $('water').disabled=!enabled;$('drain').disabled=!enabled;
+ }
 ['threshold','window','warning','alerts','repeats'].forEach(id=>$(id).disabled=true);
 async function checkTelegramAccess(){
  const status=$('authStatus');
@@ -46,7 +51,9 @@ async function checkTelegramAccess(){
      return;
    }
    isAdmin=result.isAdmin===true;
+    updateEventButtons();
    status.textContent=isAdmin?'✓ Администратор · Telegram подтверждён':'Режим просмотра · Telegram подтверждён';
+    if(isAdmin)$('eventStatus').textContent='Кнопки доступны. Событие будет записано с последним замером ESP32 (не старше 30 минут).';
  }catch(error){
    status.textContent='Режим просмотра · сервер авторизации недоступен';
  }
@@ -119,6 +126,46 @@ async function refresh(){
   loaded=true;$('apiStatus').textContent='Данные из Google Sheets. Обновление каждые 10 минут.';render();
  }catch(err){$('apiStatus').textContent='Ошибка получения данных: '+err.message+'. Повторим попытку через 10 минут.';if(!loaded){$('forecastText').textContent='Нет связи с Google Sheets';$('chartStatus').textContent='Не удалось загрузить данные'}}
 }
+async function recordEvent(type){
+ if(!isAdmin||!tg?.initData||eventBusy)return;
+ if(Date.now()-lastEventAttempt<5000){
+   $('eventStatus').textContent='Подожди несколько секунд перед следующим действием.';
+   return;
+ }
+ const label=type==='полив'?'полив':'слив воды';
+ const latest=samples.length?samples[samples.length-1]:null;
+ const measurementInfo=latest?'Последний видимый замер: '+latest.w.toFixed(1).replace('.',',')+' г, '+fmtFull(latest.t)+'.\n':'Последний замер пока не загружен.\n';
+ const message='Записать событие «'+label+'»?\n\n'+measurementInfo+'Google возьмёт свой последний замер ESP32 (не старше 30 минут).\n\nУже произошло это действие?';
+ const confirmed=window.confirm(message);
+ if(!confirmed)return;
+ eventBusy=true;lastEventAttempt=Date.now();updateEventButtons();
+ $('eventStatus').textContent='Сохраняем событие «'+label+'»…';
+ try{
+   const response=await fetch(EVENT_API,{
+     method:'POST',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({initData:tg.initData,type}),
+     cache:'no-store'
+   });
+   let result;
+   try{result=await response.json()}catch(_){throw new Error('Некорректный ответ сервера')}
+   if(!response.ok||result.ok!==true){
+     if(result.error==='Measurement is stale')throw new Error('Замер старше 30 минут. Дождись нового измерения ESP32.');
+     if(result.error==='Telegram verification failed')throw new Error('Сессия Telegram устарела. Закрой и снова открой приложение.');
+     throw new Error('Запись не подтверждена сервером');
+   }
+   const measuredAt=Date.parse(result.measuredAt);
+   const when=Number.isFinite(measuredAt)?fmtFull(measuredAt):'время неизвестно';
+   $('eventStatus').textContent='✓ «'+label+'» записан. Вес: '+Number(result.weight).toFixed(1).replace('.',',')+' г; замер: '+when+'.';
+   await refresh();
+ }catch(error){
+   $('eventStatus').textContent='Не удалось подтвердить запись: '+error.message+' Проверь лист Events перед повторным нажатием, чтобы избежать дубля.';
+ }finally{
+   eventBusy=false;updateEventButtons();
+ }
+}
+$('water').onclick=()=>recordEvent('полив');
+$('drain').onclick=()=>recordEvent('послеслив');
 $('settingsBtn').onclick=()=>{$('dashboard').classList.add('hidden');$('settings').classList.remove('hidden');$('threshold').value=cfg.threshold;$('window').value=cfg.window;$('warning').value=cfg.warning};
 $('back').onclick=()=>{$('settings').classList.add('hidden');$('dashboard').classList.remove('hidden');render()};
 document.querySelectorAll('[data-hours]').forEach(b=>b.onclick=()=>{hours=Number(b.dataset.hours);document.querySelectorAll('[data-hours]').forEach(x=>x.classList.toggle('active',x===b));draw()});
